@@ -4,7 +4,8 @@ A tentative project of browser extension that alert user before sending emails i
 * Replace the send button with custom button.
 * Show options (send now or schedule send) onClick.
 * Utilize the original schedule component of Gmail.
-![snapshot](./standalone.png)
+
+<img src="./standalone.png" width="200">
 
 ### Project Structure
 
