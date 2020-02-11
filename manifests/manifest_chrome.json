@@ -4,7 +4,9 @@
   "version": "1.0",
   "author": "jiehan1029@gmail.com",
   "manifest_version": 2,
-  "permissions": ["activeTab", "storage"],
+  "permissions": [
+    "activeTab"
+  ],
   "icons": {
     "16": "icon16.png",
     "24": "icon24.png",
@@ -35,5 +37,9 @@
       "browser-polyfill.js",
       "content.js"
     ]
-  }]
+  }],
+  "web_accessible_resources": [
+    "gmail.js",
+    "jquery.min.js"
+  ]
 }

@@ -16,3 +16,20 @@
 .App-intro {
   font-size: large;
 }
+
+
+.smart-send-btn {
+	background-color: #1a73e8;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.smart-send-btn	button {
+	background-color: #1a73e8;
+	border: none;
+
+	color: white;
+	font-weight: 700;
+	text-transform: capitalize;
+}

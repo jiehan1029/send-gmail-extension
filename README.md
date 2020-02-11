@@ -1,5 +1,11 @@
 A tentative project of browser extension that alert user before sending emails in gmail. The key at the beginning phase is to ensure cross-browser compatibility with a low level of effort for maintenance. Also serves as a project template.
 
+### App snapshots
+* Replace the send button with custom button.
+* Show options (send now or schedule send) onClick.
+* Utilize the original schedule component of Gmail.
+![snapshot](./standalone.png)
+
 ### Project Structure
 
 #### `/manifests`
@@ -31,7 +37,15 @@ Run `./build.sh <browser name>`, will create a `publish` folder with necessary f
 
 For development, [run chrome extension in developer mode](https://developer.chrome.com/extensions/getstarted).
 
-### Notes on used libraries and other things:
+### Challenges, notes and libraries used:
+#### Trigger Schedule Send
+One major challenge is to trigger the original "Schedule Send" callback use javascript. That element (`div#sbddm` as of 02/11/20) has been listening to `mouseup` event whose callback is our target. However, dispatch a `mouseup` event does nothing. I am not completely clear the cause, suspecting that the dispatched event has the read-only property `isTrusted` set to `false`. 
+
+To bypass this issue, instead of making a custom button and set its `onClick` event to the callback of original "Schedule Send", the UI is designed to include the "Schedule Send" button as part of it, so user will interact with the original component directly. It is implemented by manipulating the CSS properties of the orginial component, and thus would need to be monitored & tested regularly to make sure everything goes well during Gmail updates.
+
+#### Others
 * To bypass the restriction of CSP, create a `.env` file in root directory and put `INLINE_RUNTIME_CHUNK=false` inside it (if use `create-react-app` to build). Ref: [https://github.com/facebook/create-react-app/issues/5897](https://github.com/facebook/create-react-app/issues/5897)
 * to use Chrome API inside React files, add `/*global chrome*/` in the top of the file. Ref: [using chrome api with react js](https://stackoverflow.com/questions/51411447/using-chrome-api-with-react-js)
 * [Chrome Extension Async](https://github.com/KeithHenry/chromeExtensionAsync)
+
+* This project use [Gmail.js](https://github.com/KartikTalwar/gmail.js) for interface with gmail. However the support for new Gmail is limited for some methods ([`send_message` events not working](https://github.com/KartikTalwar/gmail.js/issues/601)). Should keep an eye on it.

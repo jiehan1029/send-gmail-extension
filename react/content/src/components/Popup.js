@@ -1,38 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
+import { Button } from 'reactstrap';
 import classNames from 'classnames';
-
 import styles from './Popup.module.scss';
 
-export function Popup (){
-	// states
-
-
-	// hooks
-
-
-	// methods
-	onClickSchedule = ()=>{
-		console.log('onClickSchedule')
-
-
-
-	}
-	onClickSend = ()=>{
-		console.log('onClickSend')
-
-
-
-	}
-
-	// returns
+export function Popup (props){
 	return(
-		<div>
-			<header>Schedule to send in work hours?</header>
-			<div className={styles.buttonGroup}>
-				<button onClick={onClickSchedule}>Yes, schedule</button>
-				<button onClick={onClickSend}>No, send now</button>
-			</div>
+		<div style={{display: props.show ? 'block' : 'none', left: props.leftOffset + 'px'}} className={classNames(styles.wrapper)}>
+			<Button color="btn-secondary" onClick={props.onClickSend}>Send Now</Button>
 		</div>
 	)
 }
