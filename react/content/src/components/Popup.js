@@ -6,7 +6,14 @@ import styles from './Popup.module.scss';
 
 export function Popup (props){
 	return(
-		<div style={{display: props.show ? 'block' : 'none', left: props.leftOffset + 'px'}} className={classNames(styles.wrapper)}>
+		<div
+			style={{
+				display: props.show ? 'block' : 'none',
+				left: props.leftOffset + 'px',
+				bottom: props.bottomOffset + 'px'
+			}}
+			className={classNames(styles.wrapper)}
+		>
 			<Button color="btn-secondary" onClick={props.onClickSend}>Send Now</Button>
 		</div>
 	)
