@@ -44,6 +44,11 @@ One major challenge is to trigger the original "Schedule Send" callback use java
 
 To bypass this issue, instead of making a custom button and set its `onClick` event to the callback of original "Schedule Send", the UI is designed to include the "Schedule Send" button as part of it, so user will interact with the original component directly. It is implemented by manipulating the CSS properties of the orginial component, and thus would need to be monitored & tested regularly to make sure everything goes well during Gmail updates.
 
+#### Bugs, improvements, and maintenance
+* Buttons are not aligned on window scroll for inline reply and after switching to popup compose view. The first may be resolved by adding event listener; the second need to find a hook for changing compose view.
+* Handle the case when composing multiple drafts -- to identify the currently active compose window.
+* The compose element is identified via page HTML structure and classes, thus requires regular tests to make sure it does not break due to Gmail updates.
+
 #### Others
 * To bypass the restriction of CSP, create a `.env` file in root directory and put `INLINE_RUNTIME_CHUNK=false` inside it (if use `create-react-app` to build). Ref: [https://github.com/facebook/create-react-app/issues/5897](https://github.com/facebook/create-react-app/issues/5897)
 * to use Chrome API inside React files, add `/*global chrome*/` in the top of the file. Ref: [using chrome api with react js](https://stackoverflow.com/questions/51411447/using-chrome-api-with-react-js)
