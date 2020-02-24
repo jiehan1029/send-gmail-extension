@@ -39,11 +39,6 @@ Run `./build.sh <browser name>`, will create a `publish` folder with necessary f
 For development, [run chrome extension in developer mode](https://developer.chrome.com/extensions/getstarted).
 
 ### Challenges, notes and libraries used:
-#### Trigger Schedule Send
-One major challenge is to trigger the original "Schedule Send" callback use javascript. That element (`div#sbddm` as of 02/11/20) has been listening to `mouseup` event whose callback is our target. However, dispatch a `mouseup` event does nothing. I am not completely clear the cause, suspecting that the dispatched event has the read-only property `isTrusted` set to `false`. 
-
-To bypass this issue, instead of making a custom button and set its `onClick` event to the callback of original "Schedule Send", the UI is designed to include the "Schedule Send" button as part of it, so user will interact with the original component directly. It is implemented by manipulating the CSS properties of the orginial component, and thus would need to be monitored & tested regularly to make sure everything goes well during Gmail updates.
-
 #### Bugs, improvements, and maintenance
 * Buttons are not aligned on window scroll for inline reply and after switching to popup compose view. The first may be resolved by adding event listener; the second need to find a hook for changing compose view.
 * Handle the case when composing multiple drafts -- to identify the currently active compose window.
