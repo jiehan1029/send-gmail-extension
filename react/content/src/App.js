@@ -28,9 +28,9 @@ export class App extends Component {
 		const compose_ref = Gmail.dom.compose(params.$el);
 		let btnHTML = '<button>Smart Send</button>';
 		let btnCls = 'smart-send-btn';
-		Gmail.tools.add_compose_button(compose_ref, btnHTML, ()=>this.onClickSmartSend(compose_ref, false), btnCls);
+		Gmail.tools.add_compose_button(compose_ref, btnHTML, ()=>this.onClickSmartSend(compose_ref, false, true), btnCls);
 	}
-	onClickSmartSend = (compose_ref, forceSchedule=false)=>{
+	onClickSmartSend = (compose_ref, forceSchedule=false, autoSend=false)=>{
 		// if within work hours, send directly
 		let WH = [8, 18];
 		let WorkHours = WH.map(t=>{
@@ -80,43 +80,38 @@ export class App extends Component {
 				let menu = findMenu();
 				if(menu && typeof menu !== 'string'){
 					clearInterval(checkExist);
-					// add send now button to menu
-					let sendNowBtn = document.createElement('button');
-					sendNowBtn.innerText = 'Send Now';
-					sendNowBtn.style.borderLeft = '0';
-					sendNowBtn.style.borderRight = '0';
-					sendNowBtn.addEventListener('click', ()=>{
-						// send now
-						let sendButtons = compose_ref.dom('send_button');
-						sendButtons[0].click();
 
-						// close menu modal
-						let closeBtn = menu.querySelector('span[aria-label="Close"]');
-						closeBtn.click();
-					});
-					menu.append(sendNowBtn);
-
-					// // hide menu and backdrop
-					// menu.style.display = 'none';
-					// console.log('hidemenu')
-					// const possibleBD = document.querySelectorAll('div[aria-hidden=true]');
-					// possibleBD.forEach(e=>{
-					// 	if(e.style.opacity == 1){
-					// 		e.style.opacity = "0";
-					// 		console.log('hide opacity')
-					// 	}
-					// });
-					// console.log('hide!')
-					// // click the menu item
-					// const timePickerDiv = menu.querySelectorAll('div[role="menu"]')[0];
-					// const menuItems = timePickerDiv.querySelectorAll('div[role="menuitem"]');
-					// menuItems[0].click();
+					// auto send and hide popup (still will be a flash)
+					if(autoSend){
+						menu.style.display = 'none';
+						// backdrop is the previous sibling
+						menu.previousElementSibling.style.opacity = '0';
+						// auto send by clicking the first menu item (tomorrow 8am)
+						const timePickerDiv = menu.querySelectorAll('div[role="menu"]')[0];
+						const menuItems = timePickerDiv.querySelectorAll('div[role="menuitem"]');
+						menuItems[0].click();	
+					}
+					// not autosend, will show the popup with a send now button attached
+					else{
+						// add send now button to menu
+						let sendNowBtn = document.createElement('button');
+						sendNowBtn.innerText = 'Send Now';
+						sendNowBtn.style.borderLeft = '0';
+						sendNowBtn.style.borderRight = '0';
+						sendNowBtn.addEventListener('click', ()=>{
+							// send now
+							let sendButtons = compose_ref.dom('send_button');
+							sendButtons[0].click();
+							// close menu modal
+							let closeBtn = menu.querySelector('span[aria-label="Close"]');
+							closeBtn.click();
+						});
+						menu.append(sendNowBtn);
+					}
 					return;
 				}
 				else if(typeof menu === 'string' && menu === 'alert'){
 					clearInterval(checkExist);
-
-					console.log('alert');
 					return;
 				}
 				else{
