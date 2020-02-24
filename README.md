@@ -2,10 +2,12 @@ A tentative project of browser extension that alert user before sending emails i
 
 ### App snapshots
 * Replace the send button with custom button.
-* Show options (send now or schedule send) onClick.
-* Utilize the original schedule component of Gmail.
+* If send email within work hours (8am - 6pm), send immediately.
+* If send email outside work hours, show schedule popup (utilize the original schedule component of Gmail).
+* Append a send now option to sechedule popup.
 
 <img src="./standalone.png" width="200">
+<img src="./popup.png" width="200">
 
 ### Project Structure
 
@@ -38,15 +40,10 @@ Run `./build.sh <browser name>`, will create a `publish` folder with necessary f
 
 For development, [run chrome extension in developer mode](https://developer.chrome.com/extensions/getstarted).
 
-### Challenges, notes and libraries used:
-#### Bugs, improvements, and maintenance
-* Buttons are not aligned on window scroll for inline reply and after switching to popup compose view. The first may be resolved by adding event listener; the second need to find a hook for changing compose view.
-* Handle the case when composing multiple drafts -- to identify the currently active compose window.
-* The compose element is identified via page HTML structure and classes, thus requires regular tests to make sure it does not break due to Gmail updates.
-
 #### Others
 * To bypass the restriction of CSP, create a `.env` file in root directory and put `INLINE_RUNTIME_CHUNK=false` inside it (if use `create-react-app` to build). Ref: [https://github.com/facebook/create-react-app/issues/5897](https://github.com/facebook/create-react-app/issues/5897)
 * to use Chrome API inside React files, add `/*global chrome*/` in the top of the file. Ref: [using chrome api with react js](https://stackoverflow.com/questions/51411447/using-chrome-api-with-react-js)
 * [Chrome Extension Async](https://github.com/KeithHenry/chromeExtensionAsync)
 
 * This project use [Gmail.js](https://github.com/KartikTalwar/gmail.js) for interface with gmail. However the support for new Gmail is limited for some methods ([`send_message` events not working](https://github.com/KartikTalwar/gmail.js/issues/601)). Should keep an eye on it.
+* The compose element is identified via page HTML structure and classes, thus requires regular tests to make sure it does not break due to Gmail updates.
