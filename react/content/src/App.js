@@ -59,57 +59,72 @@ export class App extends Component {
 			scheduleTarget.dispatchEvent(mousedown);
 			scheduleTarget.dispatchEvent(mouseup);
 
-			// function findMenu(){
-			// 	const alertModal = document.querySelectorAll('div[role="alertdialog"]')[0];
-			// 	if(alertModal){
-			// 		return 'alert';
-			// 	}
+			function findMenu(){
+				const alertModal = document.querySelectorAll('div[role="alertdialog"]')[0];
+				if(alertModal){
+					return 'alert';
+				}
 
-			// 	// now find the schedule menu modal and make the selection
-			// 	const modals = document.querySelectorAll('div[role="dialog"]');
-			// 	let menu;
-			// 	modals.forEach(elem=>{
-			// 		if(elem.textContent.startsWith("Schedule")){
-			// 			menu = elem;
-			// 		}
-			// 	});
-			// 	return menu;
-			// }
+				// now find the schedule menu modal and make the selection
+				const modals = document.querySelectorAll('div[role="dialog"]');
+				let menu;
+				modals.forEach(elem=>{
+					if(elem.textContent.startsWith("Schedule")){
+						menu = elem;
+					}
+				});
+				return menu;
+			}
 
-			// const checkExist = setInterval(()=>{
-			// 	let menu = findMenu();
-			// 	if(menu && typeof menu !== 'string'){
-			// 		// hide menu and backdrop
-			// 		menu.style.display = 'none';
-			// 		console.log('hidemenu')
-			// 		const possibleBD = document.querySelectorAll('div[aria-hidden=true]');
-			// 		possibleBD.forEach(e=>{
-			// 			if(e.style.opacity == 1){
-			// 				e.style.opacity = "0";
-			// 				console.log('hide opacity')
-			// 			}
-			// 		});
+			const checkExist = setInterval(()=>{
+				let menu = findMenu();
+				if(menu && typeof menu !== 'string'){
+					clearInterval(checkExist);
+					// add send now button to menu
+					let sendNowBtn = document.createElement('button');
+					sendNowBtn.innerText = 'Send Now';
+					sendNowBtn.style.borderLeft = '0';
+					sendNowBtn.style.borderRight = '0';
+					sendNowBtn.addEventListener('click', ()=>{
+						// send now
+						let sendButtons = compose_ref.dom('send_button');
+						sendButtons[0].click();
 
-			// 		console.log('hide!')
+						// close menu modal
+						let closeBtn = menu.querySelector('span[aria-label="Close"]');
+						closeBtn.click();
+					});
+					menu.append(sendNowBtn);
 
-			// 		// // click the menu item
-			// 		// const timePickerDiv = menu.querySelectorAll('div[role="menu"]')[0];
-			// 		// const menuItems = timePickerDiv.querySelectorAll('div[role="menuitem"]');
-			// 		// menuItems[0].click();
-			// 		clearInterval(checkExist);
-			// 		return;
-			// 	}
-			// 	else if(typeof menu === 'string' && menu === 'alert'){
-			// 		console.log('alert');
-			// 		clearInterval(checkExist);
-			// 		return;
-			// 	}
-			// 	else{
-			// 		// console.log("wait to find menu");
-			// 	}
-			// }, 100); // check every 100ms;
+					// // hide menu and backdrop
+					// menu.style.display = 'none';
+					// console.log('hidemenu')
+					// const possibleBD = document.querySelectorAll('div[aria-hidden=true]');
+					// possibleBD.forEach(e=>{
+					// 	if(e.style.opacity == 1){
+					// 		e.style.opacity = "0";
+					// 		console.log('hide opacity')
+					// 	}
+					// });
+					// console.log('hide!')
+					// // click the menu item
+					// const timePickerDiv = menu.querySelectorAll('div[role="menu"]')[0];
+					// const menuItems = timePickerDiv.querySelectorAll('div[role="menuitem"]');
+					// menuItems[0].click();
+					return;
+				}
+				else if(typeof menu === 'string' && menu === 'alert'){
+					clearInterval(checkExist);
 
-			// checkExist();
+					console.log('alert');
+					return;
+				}
+				else{
+					// console.log("wait to find menu");
+				}
+			}, 100); // check every 100ms;
+
+			checkExist();
 			return;
 		}
 		// send directly
